@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Meta Information -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CENT - Face Banking System</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- Main application styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> <!-- Typography -->
+</head>
+<body>
+    <!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <!-- Brand Logo -->
+        <div class="nav-logo">
+            <h2>CENT</h2>
+        </div>
+        
+        <!-- Navigation Links -->
+        <div class="nav-menu" id="nav-menu">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        
+        <!-- Mobile Menu Toggle Button -->
+        <div class="nav-toggle" id="nav-toggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </div>
+</nav>
+
+    <!-- Hero Section - Main landing area -->
+<section id="home" class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <!-- Main Headline -->
+            <h1 class="hero-title">
+                Secure Banking with
+                <span class="gradient-text">Face Recognition</span>
+            </h1>
+            
+            <!-- Value Proposition -->
+            <p class="hero-description">
+                Experience the future of banking with our advanced facial recognition technology. 
+                Secure, fast, and convenient transactions at your fingertips.
+            </p>
+            
+            <!-- Call-to-Action Buttons -->
+            <div class="hero-buttons">
+                <!-- Login Button - Opens login modal with face recognition -->
+                <button class="btn btn-primary" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                
+                <!-- Register Button - Opens registration modal -->
+                <button class="btn btn-secondary" onclick="showRegisterModal()">
+                    <i class="fas fa-user-plus"></i>
+                        Register
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="app-interface">
+                            <div class="app-header">
+                                <h3>CENT Bank</h3>
+                            </div>
+                            <div class="app-content">
+                                <div class="balance-card">
+                                    <h4>Account Balance</h4>
+                                    <p class="balance-amount">$12,450.00</p>
+                                </div>
+                                <div class="quick-actions">
+                                    <button class="action-btn">
+                                        <i class="fas fa-arrow-up"></i>
+                                        Send
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-arrow-down"></i>
+                                        Receive
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-chart-line"></i>
+                                        Invest
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose CENT?</h2>
+                <p>Advanced security features powered by cutting-edge technology</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Face Recognition Security</h3>
+                    <p>Advanced facial recognition technology ensures only you can access your account</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Complete transactions in seconds with our optimized face recognition system</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile First</h3>
+                    <p>Designed for mobile devices with responsive interface and touch-friendly controls</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Bank-Level Security</h3>
+                    <p>Military-grade encryption and security protocols protect your financial data</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to CENT</h2>
+                <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="login-steps">
+                    <div class="step active" id="step1">
+                        <h3>Step 1: Face Recognition</h3>
+                        <p>Position your face in front of the camera for verification</p>
+                        <div class="camera-container">
+                            <video id="video" autoplay muted></video>
+                            <canvas id="canvas" style="display: none;"></canvas>
+                            <div class="camera-overlay">
+                                <div class="face-outline"></div>
+                                <div class="scanning-animation"></div>
+                                <div class="capture-instructions">
+                                    <p>Looking for your face...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recognition-status">
+                            <div class="status-indicator">
+                                <div class="status-dot pulsing"></div>
+                                <p>Face recognition in progress...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="step2">
+                        <h3>Step 2: Password Verification</h3>
+                        <p>Enter your account password to complete login</p>
+                        <div class="form-group">
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <button class="btn btn-primary" onclick="verifyPassword()">
+                            <i class="fas fa-check"></i>
+                            Verify Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Register with CENT</h2>
+                <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <input type="text" id="regName" placeholder="Full Name" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="regPassword" placeholder="Password (min 8 characters)" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direct Login Modal has been removed for security reasons -->
+
+    <!-- Dashboard Modal -->
+    <div id="dashboardModal" class="modal dashboard-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome, <span id="userName"></span></h2>
+                <div class="header-actions">
+                    <button class="btn btn-small" onclick="showProfileModal()">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </button>
+                    <button class="btn btn-small" onclick="showSettingsModal()">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </button>
+                    <span class="close" onclick="logout()">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="dashboard-grid">
+                    <div class="balance-card">
+                        <h3>Account Balance</h3>
+                        <p class="balance-amount" id="accountBalance">$0.00</p>
+                        <div class="account-info">
+                            <small>Account: <span id="accountNumber"></span></small>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="showTransactionModal('deposit')">
+                            <i class="fas fa-plus"></i>
+                            Deposit
+                        </button>
+                        <button class="action-btn" onclick="showTransactionModal('withdraw')">
+                            <i class="fas fa-minus"></i>
+                            Withdraw
+                        </button>
+                        <button class="action-btn" onclick="showTransactionModal('transfer')">
+                            <i class="fas fa-exchange-alt"></i>
+                            Transfer
+                        </button>
+                        <button class="action-btn" onclick="showTransactionModal('balance')">
+                            <i class="fas fa-chart-line"></i>
+                            Balance
+                        </button>
+                        <button class="action-btn" onclick="showTransactionHistory()">
+                            <i class="fas fa-history"></i>
+                            History
+                        </button>
+                        <button class="action-btn" onclick="showAdminPanel()">
+                            <i class="fas fa-users-cog"></i>
+                            Admin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="transactionTitle">Transaction</h2>
+                <span class="close" onclick="closeModal('transactionModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="transactionForm">
+                    <div id="transactionContent">
+                        <!-- Dynamic content based on transaction type -->
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="transactionSubmit">
+                        <i class="fas fa-check"></i>
+                        Process
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>User Profile</h2>
+                <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="profile-info">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-details">
+                        <h3 id="profileName">Loading...</h3>
+                        <p>Account Number: <span id="profileAccountNumber">Loading...</span></p>
+                        <p>Bank: <span id="profileBank">CENT</span></p>
+                        <p>Member Since: <span id="profileJoinDate">2024</span></p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="closeModal('profileModal')">
+                    <i class="fas fa-check"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Account Settings</h2>
+                <span class="close" onclick="closeModal('settingsModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="settings-tabs">
+                    <button class="tab-btn active" onclick="showSettingsTab('profile')">Profile</button>
+                    <button class="tab-btn" onclick="showSettingsTab('security')">Security</button>
+                </div>
+                
+                <div id="profileTab" class="settings-tab active">
+                    <h3>Update Profile</h3>
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="settingsName">Full Name</label>
+                            <input type="text" id="settingsName" placeholder="Enter your name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Update Profile
+                        </button>
+                    </form>
+                </div>
+                
+                <div id="securityTab" class="settings-tab">
+                    <h3>Change Password</h3>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" placeholder="Enter new password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-lock"></i>
+                            Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Transaction History</h2>
+                <span class="close" onclick="closeModal('historyModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="history-filters">
+                    <select id="historyFilter">
+                        <option value="all">All Transactions</option>
+                        <option value="deposit">Deposits</option>
+                        <option value="withdraw">Withdrawals</option>
+                        <option value="transfer">Transfers</option>
+                    </select>
+                </div>
+                <div class="transaction-list" id="transactionList">
+                    <!-- Transactions will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal admin-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <span class="close" onclick="closeModal('adminModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p id="totalUsers">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Deposits</h3>
+                        <p id="totalDeposits">$0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Accounts</h3>
+                        <p id="activeAccounts">0</p>
+                    </div>
+                </div>
+                <div class="admin-table">
+                    <h3>All Users</h3>
+                    <div class="table-container">
+                        <table id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Account #</th>
+                                    <th>Balance</th>
+                                    <th>Bank</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Users will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationMessage"></span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
